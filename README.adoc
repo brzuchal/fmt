@@ -1,0 +1,88 @@
+= fmt - A modern string formatting library
+
+// Head
+:project: brzuchal/fmt
+:url-profile: https://github.com/brzuchal
+:url-project: https://github.com/brzuchal/fmt
+// Docs
+:url-docs: https://fmt.brzuchal.com
+:url-get-started: {url-docs}/get-started
+:url-php-datetime-format: https://www.php.net/datetime-format
+:url-ramsey-uuid: https://packagist.org/packages/ramsey/uuid
+
+image:https://img.shields.io/github/license/{project}[License]
+image:https://img.shields.io/packagist/php-v/{project}[Supported PHP]
+image:https://img.shields.io/packagist/v/{project}[Recent version]
+image:https://img.shields.io/github/last-commit/{project}[Last commit]
+
+*fmt* is an open-source formatting library for PHP.
+It can be used as a safe and fast alternative to (s)printf.
+It can format custom and built-in types like {url-php-datetime-format}[DateTime]
+along with 3rd parties like {url-ramsey-uuid}[Uuid from Ben Ramsey].
+
+If you are new to this library, see the {url-get-started}[Get started]
+with functions section for a quick overview.
+
+== Documentation
+
+=== Install
+Using composer
+
+[source,shell script]
+----
+composer require brzuchal/fmt
+----
+
+=== Features
+
+* Simple format API with positional and named arguments
+* Format string syntax similar to Python's format, CS String.format and C++ \{fmt} format
+* Extensibility: support for user-defined types
+* Ease of use: small self-contained code base, no external dependencies, permissive MIT license
+* Locale-independence by default
+
+See the documentation for more details.
+
+=== Examples
+Simple example printing arguments by positional placeholders in format specification:
+
+[source,php]
+----
+use function fmt/string_format;
+
+$answer = string_format("The answer is {}.", 42);
+// "The answer is 42."
+
+$feeling = string_format("I'd rather be {1} than {0}.", 'right', 'happy');
+// "I'd rather be happy than right."
+----
+
+Example showing string formatting by named arguments and named placeholders in
+format specification and {url-php-datetime-format}[DateTime] formatting:
+
+[source,php]
+----
+use function fmt/string_format;
+
+$message = string_format(
+    'On {when:Y-m-d} is {temp:0.1f}°C and is {cond}',
+    temp: 32,
+    cond: 'sunny',
+    when: new DateTimeImmutable('now'),
+);
+var_dump($message);
+// string(37) "On 2020-08-20 is 32.0°C and is sunny."
+----
+
+== Maintainers
+The *fmt* library is maintained by Michał Marcin Brzuchalski ({url-profile}[brzuchal]).
+
+== Contributing
+
+Thanks for contributing to *fmt*!
+Just follow these single guidelines:
+
+- You must use https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows[feature / topic branches] to ease the merge of contributions.
+- Coding standard compliance must be ensured before committing or opening pull requests by running `composer assert:cs-fix` or `composer assert:cs-lint` in the root directory of this repository.
+- After adding new features add documentation in `docs/` folder and regenerate the documentation by running `make docs-build`.
+- After adding new non release relevant artifacts you must ensure they are export ignored in the `.gitattributes` file.
